@@ -1,0 +1,70 @@
+<!DOcTYPE html>
+<html lang="en">
+
+<head>
+	<title> TO-DO Application </title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	
+	<script type="text/javascript">
+		
+		function changeInput(newVal, id, this1){
+			var opt = document.getElementById("opt");
+			if(opt.value == "None"){
+				opt.value = id;
+				document.getElementById("text1").value=newVal;
+				document.getElementById("btn1").value="Update";
+				this1.innerHTML = "Cancel";
+				return false;
+			}
+			else{
+				opt.value = "None";
+				document.getElementById("text1").value="";
+				document.getElementById("btn1").value="Add New";
+				this1.innerHTML = "Update";
+				return false;
+			}
+		}
+
+	</script>
+	
+</head>
+
+<body>
+
+<div class="jumbotron text-center">
+	<h2>YOUR TO-DO TASK MANAGER </h2>
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+		<form method="post" action="">{% csrf_token %}
+			<input type="hidden" id="opt" name="opt" value="None">
+			<input class="form-control" id="text1" type="text" name="todo_inp" placeholder="Enter task.." required ><br>
+			<input type="submit" value="Add New" id="btn1" class="btn btn-success">
+		</form>
+	</div>
+	
+	<div class="col-sm-8">
+		<ul class="list-group">
+			{% if qs %}
+			{% for obj in qs %}
+			<li class="list-group-item">
+			<p style="display: inline;">{{ obj.todo_des }}</p>
+			<a style="float: right;" class="alert alert-danger" href="/delete/{{ obj.id }}">Delete</a>
+			<a style="float: right;" class="alert alert-primary" onclick="changeInput('{{ obj.todo_des }}','{{ obj.id }}',this)">Update</a>
+			</li>
+			{% endfor %}
+			{% else %}
+			<li class="list-group-item">Your task list is empty !!</li>
+			{% endif %}
+		</ul>
+	</div>
+  </div>
+</div>
+
+</body>
+</html>
