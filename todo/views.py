@@ -11,7 +11,12 @@ def home(request):
 		if request.POST['opt'] == "None":
 			obj = Todo()
 			obj.todo_des = todo_des
-			obj.save()
+			check = Todo.objects.filter(todo_des=todo_des).first()
+			if check is None:
+				obj.save()
+				print('saving')
+			else:
+				print('duplicate not saving')
 		else:
 			obj_id = request.POST['opt']
 			obj = Todo.objects.filter(id=obj_id).first()
